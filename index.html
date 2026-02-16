@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Diario</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Checklist Diario</h1>
+        <p class="subtitle">Del 16 de febrero al 18 de marzo de 2026</p>
+
+        <div id="calendar-container"></div>
+
+        <div class="total">
+            <strong>Total de días: 31</strong>
+            <div class="stats">
+                <div class="stat-item stat-bien">
+                    😊 Buenos: <span id="bienCount">0</span>
+                </div>
+                <div class="stat-item stat-mal">
+                    😢 Malos: <span id="malCount">0</span>
+                </div>
+                <div class="stat-item stat-pendiente">
+                    ⏳ Pendientes: <span id="pendingCount">31</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <p style="margin-top: 15px;">
+                <span id="checkedCount">0</span> de 31 días completados
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
