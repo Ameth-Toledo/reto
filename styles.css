@@ -71,27 +71,49 @@ h1 {
     border: 2px solid #000;
     border-radius: 0;
     transition: all 0.2s ease;
+    /* Sin tap highlight ni cursor pointer — solo lectura */
     -webkit-tap-highlight-color: transparent;
+    cursor: default;
+    user-select: none;
 }
 
-.day-item:active {
-    background: #f0f0f0;
-}
-
-.day-item input[type="checkbox"] {
+/* Indicador de estado visual (reemplaza al checkbox) */
+.day-indicator {
     width: 22px;
     height: 22px;
     margin-right: 12px;
-    cursor: pointer;
-    accent-color: #000;
+    border: 2px solid #000;
+    border-radius: 3px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: #fff;
+}
+
+.day-indicator.ind-bien {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+}
+
+.day-indicator.ind-mal {
+    background: #fff;
+    border-color: #000;
+    color: #000;
+}
+
+.day-indicator.ind-empty {
+    background: #f5f5f5;
+    border-color: #ccc;
 }
 
 .day-item label {
     flex: 1;
-    cursor: pointer;
     font-size: 1em;
     color: #000;
+    cursor: default;
     user-select: none;
 }
 

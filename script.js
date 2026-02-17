@@ -1,6 +1,6 @@
 const dayStatus = {
     // FEBRERO
-    '2026-02-16': null,  // Lunes 16 de febrero
+    '2026-02-16': true,  // Lunes 16 de febrero
     '2026-02-17': null,  // Martes 17 de febrero
     '2026-02-18': null,  // Miércoles 18 de febrero
     '2026-02-19': null,  // Jueves 19 de febrero
@@ -13,7 +13,7 @@ const dayStatus = {
     '2026-02-26': null,  // Jueves 26 de febrero
     '2026-02-27': null,  // Viernes 27 de febrero
     '2026-02-28': null,  // Sábado 28 de febrero
-    
+
     // MARZO
     '2026-03-01': null,  // Domingo 1 de marzo
     '2026-03-02': null,  // Lunes 2 de marzo
@@ -105,6 +105,18 @@ const calendarData = [
     }
 ];
 
+// Devuelve el HTML del indicador visual (no es un checkbox interactivo)
+function getIndicatorHTML(status) {
+    if (status === true) {
+        return '<div class="day-indicator ind-bien">✓</div>';
+    } else if (status === false) {
+        return '<div class="day-indicator ind-mal">✗</div>';
+    } else {
+        return '<div class="day-indicator ind-empty"></div>';
+    }
+}
+
+// Devuelve el HTML del badge de estado
 function getStatusHTML(status) {
     if (status === true) {
         return '<div class="day-status status-bien">😊 Bien</div>';
@@ -129,10 +141,11 @@ function renderCalendar() {
 
             week.days.forEach(day => {
                 const status = dayStatus[day.date];
+                const checkedClass = (status === true || status === false) ? ' checked' : '';
                 html += `
-                    <div class="day-item" data-date="${day.date}">
-                        <input type="checkbox" id="${day.date}">
-                        <label for="${day.date}">${day.label}</label>
+                    <div class="day-item${checkedClass}" data-date="${day.date}">
+                        ${getIndicatorHTML(status)}
+                        <label>${day.label}</label>
                         ${getStatusHTML(status)}
                     </div>
                 `;
@@ -146,56 +159,27 @@ function renderCalendar() {
 
     container.innerHTML = html;
 
-    // Agregar event listeners
-    document.querySelectorAll('.day-item input[type="checkbox"]').forEach(checkbox => {
-        const date = checkbox.id;
-        const status = dayStatus[date];
-        
-        // Si el día tiene un estado (true o false), marcar el checkbox automáticamente
-        if (status === true || status === false) {
-            checkbox.checked = true;
-            checkbox.closest('.day-item').classList.add('checked');
-        } else {
-            // Si no tiene estado, verificar si estaba guardado en localStorage
-            const saved = localStorage.getItem(checkbox.id);
-            if (saved === 'true') {
-                checkbox.checked = true;
-                checkbox.closest('.day-item').classList.add('checked');
-            }
-        }
-
-        checkbox.addEventListener('change', function() {
-            localStorage.setItem(this.id, this.checked);
-            if (this.checked) {
-                this.closest('.day-item').classList.add('checked');
-            } else {
-                this.closest('.day-item').classList.remove('checked');
-            }
-            updateProgress();
-        });
-    });
-
     updateProgress();
 }
 
 function updateProgress() {
     const total = 31;
-    const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-    const percentage = Math.round((checked / total) * 100);
-    
-    // Contar bien y mal
+
     let bienCount = 0;
     let malCount = 0;
+
     Object.values(dayStatus).forEach(status => {
         if (status === true) bienCount++;
         if (status === false) malCount++;
     });
-    
-    const pendingCount = total - bienCount - malCount;
-    
+
+    const completedCount = bienCount + malCount;
+    const pendingCount = total - completedCount;
+    const percentage = Math.round((completedCount / total) * 100);
+
     document.getElementById('progressFill').style.width = percentage + '%';
     document.getElementById('progressFill').textContent = percentage + '%';
-    document.getElementById('checkedCount').textContent = checked;
+    document.getElementById('checkedCount').textContent = completedCount;
     document.getElementById('bienCount').textContent = bienCount;
     document.getElementById('malCount').textContent = malCount;
     document.getElementById('pendingCount').textContent = pendingCount;
