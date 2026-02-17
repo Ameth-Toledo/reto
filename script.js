@@ -1,3 +1,9 @@
+// =====================================================
+// SOLO TÚ PUEDES CAMBIAR EL ESTADO DESDE AQUÍ
+// true  = Bien 😊
+// false = Mal  😢
+// null  = Pendiente (sin marcar)
+// =====================================================
 const dayStatus = {
     // FEBRERO
     '2026-02-16': true,  // Lunes 16 de febrero
@@ -186,4 +192,34 @@ function updateProgress() {
 }
 
 // Inicializar al cargar
-window.addEventListener('load', renderCalendar);
+window.addEventListener('load', () => {
+    renderCalendar();
+    showModal();
+});
+
+function showModal() {
+    // Contar días buenos
+    let bienCount = 0;
+    Object.values(dayStatus).forEach(status => {
+        if (status === true) bienCount++;
+    });
+
+    // Actualizar número en la modal
+    document.getElementById('modal-bien-count').textContent = bienCount;
+
+    // Plurales en español
+    document.getElementById('modal-plural').textContent  = bienCount === 1 ? '' : 's';
+    document.getElementById('modal-plural2').textContent = bienCount === 1 ? '' : 's';
+
+    // Cerrar al hacer click en el botón
+    document.getElementById('modal-close').addEventListener('click', () => {
+        document.getElementById('modal-overlay').classList.add('hidden');
+    });
+
+    // También cerrar al hacer click fuera de la caja
+    document.getElementById('modal-overlay').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modal-overlay')) {
+            document.getElementById('modal-overlay').classList.add('hidden');
+        }
+    });
+}
