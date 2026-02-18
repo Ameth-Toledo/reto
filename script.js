@@ -7,7 +7,7 @@
 const dayStatus = {
     // FEBRERO
     '2026-02-16': true,  // Lunes 16 de febrero
-    '2026-02-17': null,  // Martes 17 de febrero
+    '2026-02-17': true,  // Martes 17 de febrero
     '2026-02-18': null,  // Miércoles 18 de febrero
     '2026-02-19': null,  // Jueves 19 de febrero
     '2026-02-20': null,  // Viernes 20 de febrero
